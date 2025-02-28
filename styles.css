@@ -1,0 +1,123 @@
+/* === Základní nastavení === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+    color: #fff;
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* === Vyhledávací pole === */
+.search-box {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+#searchInput {
+    width: 100%;
+    padding: 18px;
+    font-size: 18px;
+    border: 2px solid #00ff88;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    transition: all 0.3s;
+}
+
+#searchInput:focus {
+    outline: none;
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+}
+
+/* === Seznam termínů === */
+.term-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    transition: transform 0.3s;
+}
+
+.term-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.term-header {
+    color: #00ff88;
+    font-size: 24px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.term-header span {
+    background: rgba(0, 255, 136, 0.1);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.copy-btn {
+    background: rgba(0, 255, 136, 0.2);
+    color: #00ff88;
+    border: 1px solid #00ff88;
+    padding: 8px 20px;
+    border-radius: 7px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.3s;
+}
+
+.copy-btn:hover {
+    background: rgba(0, 255, 136, 0.3);
+}
+
+/* Toast notifikace */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 25px;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { bottom: -50px; }
+    to { bottom: 20px; }
+}
+
+/* Styl pro "žádné výsledky" */
+.no-results {
+    text-align: center;
+    padding: 40px;
+    color: #888;
+    font-size: 1.2em;
+}
+
+/* === Responsivní design === */
+@media (max-width: 768px) {
+    .term-header {
+        font-size: 20px;
+    }
+}

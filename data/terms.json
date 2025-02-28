@@ -1,0 +1,242 @@
+[
+    {
+        "term": "HODL",
+        "category": "Slang",
+        "definition": "Původní překlep slova 'HOLD'. Dlouhodobé držení kryptoměn navzdory tržní volatilitě.",
+        "example": "„HODLuji Ethereum i když cena klesá o 60%!“"
+    },
+    {
+        "term": "FOMO",
+        "category": "Psychologie",
+        "definition": "Fear of Missing Out – strach z promeškání příležitosti vedoucí k iracionálním nákupům.",
+        "example": "„Kvůli FOMO jsem koupil DOGE na ATH a teď jsem v mínusu.“"
+    },
+    {
+        "term": "Whale",
+        "category": "Ekonomie",
+        "definition": "Jednotlivec nebo instituce s portfoliem v řádu desítek milionů dolarů.",
+        "example": "„Whale převedl 12 000 BTC na Binance, čekáme dump.“"
+    },
+    {
+        "term": "DeFi",
+        "category": "Technologie",
+        "definition": "Decentralizované finance – finanční služby bez prostředníků na blockchainu.",
+        "example": "„V DeFi si půjčím USDC bez ověření totožnosti.“"
+    },
+    {
+        "term": "NFT",
+        "category": "Technologie",
+        "definition": "Non-Fungible Token – digitální certifikát vlastnictví unikátního aktiva.",
+        "example": "„Prodal jsem NFT kocoura za 300 ETH!“"
+    },
+    {
+        "term": "Rug Pull",
+        "category": "Podvody",
+        "definition": "Podvod kdy vývojáři opustí projekt a zmizí s investory penězi.",
+        "example": "„Nový meme coin udělal rug pull po 3 dnech, všichni přišli o peníze.“"
+    },
+    {
+        "term": "APR",
+        "category": "Ekonomie",
+        "definition": "Annual Percentage Rate – roční procentní výnos z DeFi stakování.",
+        "example": "„Na Curve Finance je aktuálně APR 18% pro stablecoiny.“"
+    },
+    {
+        "term": "Mainnet",
+        "category": "Technologie",
+        "definition": "Produkční verze blockchainové sítě pro reálné transakce.",
+        "example": "„Cardano spustilo smart contracty na mainnetu v září 2021.“"
+    },
+    {
+        "term": "Gas Fee",
+        "category": "Technologie",
+        "definition": "Poplatek za provedení transakce na blockchainu (zejména Ethereum).",
+        "example": "„Při mintování NFT byla gas fee 150 $!“"
+    },
+    {
+        "term": "DAO",
+        "category": "Organizace",
+        "definition": "Decentralizovaná autonomní organizace řízená komunitou.",
+        "example": "„Uniswap DAO hlasuje o změně poplatků.“"
+    },
+    {
+        "term": "Shitcoin",
+        "category": "Slang",
+        "definition": "Kryptoměna bez reálného využití nebo hodnoty.",
+        "example": "„Další shitcoin padl o 99% během týdne.“"
+    },
+    {
+        "term": "Stablecoin",
+        "category": "Ekonomie",
+        "definition": "Kryptoměna navázaná na fiat měnu (např. USDT, USDC).",
+        "example": "„Při dumpu BTC převádím vše do stablecoinů.“"
+    },
+    {
+        "term": "Halving",
+        "category": "Ekonomie",
+        "definition": "Pravidelné snížení odměn pro těžaře Bitcoinu na polovinu.",
+        "example": "„Po halvingu 2024 bude inflace BTC jen 0.5% ročně.“"
+    },
+    {
+        "term": "WAGMI",
+        "category": "Slang",
+        "definition": "We're All Gonna Make It – optimistické motto krypto komunity.",
+        "example": "„Neztrácej naději, WAGMI!“"
+    },
+    {
+        "term": "DYOR",
+        "category": "Rada",
+        "definition": "Do Your Own Research – výzva k vlastnímu průzkumu před investicí.",
+        "example": "„DYOR než nakoupíš ten nový coin!“"
+    },
+    {
+        "term": "Cold Wallet",
+        "category": "Bezpečnost",
+        "definition": "Hardwarová peněženka offline pro bezpečné uložení kryptoměn.",
+        "example": "„Většinu BTC držím v cold wallet od Ledgeru.“"
+    },
+    {
+        "term": "Flash Loan",
+        "category": "DeFi",
+        "definition": "Bezkolaterální půjčka splatná v rámci jedné transakce.",
+        "example": "„Použil jsem flash loan pro arbitráž mezi burzami.“"
+    },
+    {
+        "term": "Impermanent Loss",
+        "category": "DeFi",
+        "definition": "Dočasná ztráta z poskytování likvidity v DEXu.",
+        "example": "„Kvůli impermanent loss jsem přišel o 15% hodnoty LP tokenů.“"
+    },
+    {
+        "term": "MEV",
+        "category": "Technologie",
+        "definition": "Miner Extractable Value – zisk z manipulace s pořadím transakcí.",
+        "example": "„MEV boty předbíhají běžné uživatele při nákupu NFT.“"
+    },
+    {
+        "term": "Zero-Knowledge Proof",
+        "category": "Technologie",
+        "definition": "Kryptografický důkaz bez prozrazení informací (např. ZK-Rollups).",
+        "example": "„ZkSync využívá zero-knowledge proofs pro škálování.“"
+    },
+    {
+        "term": "AI Oracle",
+        "category": "AI & Tech",
+        "definition": "Decentralizovaný oracle poskytující data trénovaná AI (např. predikce cen).",
+        "example": "„Fetch.ai využívá AI oracles pro optimalizaci DeFi strategií.“"
+    },
+    {
+        "term": "zkEVM",
+        "category": "Technologie",
+        "definition": "Zero-Knowledge Ethereum Virtual Machine – kompatibilní L2 řešení se ZK proofs.",
+        "example": "„Polygon zkEVM snížil gas fees o 90% oproti mainnetu.“"
+    },
+    {
+        "term": "Liquid Staking",
+        "category": "DeFi",
+        "definition": "Možnost stakeovat krypto a zároveň používat deriváty (např. stETH).",
+        "example": "„Lido mi za liquid staking ETH vydává stETH tokeny.“"
+    },
+    {
+        "term": "MEV Bot",
+        "category": "Technologie",
+        "definition": "Automatizovaný software profitující z miner extractable value.",
+        "example": "„MEV bot předbíhá mé transakce na Uniswapu!“"
+    },
+    {
+        "term": "RWA",
+        "category": "Tokenizace",
+        "definition": "Real-World Assets – tokenizace reálných aktiv (nemovitosti, dluhopisy).",
+        "example": "„BlackRock spustil tokenizovaný fond RWA na Ethereum.“"
+    },
+    {
+        "term": "Multi-Signature Wallet",
+        "category": "Bezpečnost",
+        "definition": "Peněženka vyžadující více podpisů pro transakci.",
+        "example": "„Naše DAO treasury používá 5/8 multisig.“"
+    },
+    {
+        "term": "Social Engineering",
+        "category": "Bezpečnost",
+        "definition": "Manipulace uživatele k získání přístupu k financím.",
+        "example": "„Podvodník se vydával za podporu MetaMasku – klasický social engineering.“"
+    },
+    {
+        "term": "Reentrancy Attack",
+        "category": "Bezpečnost",
+        "definition": "Chyba v smart contractu umožňující opakované stažení financí.",
+        "example": "„DAO Hack v roce 2016 byl reentrancy attack.“"
+    },
+    {
+        "term": "Yield Optimizer",
+        "category": "DeFi",
+        "definition": "Protokol automaticky hledající nejlepší výnosy (např. Yearn Finance).",
+        "example": "„Přes yield optimizer mám o 5% vyšší APR než na Aave.“"
+    },
+    {
+        "term": "Governance Mining",
+        "category": "DeFi",
+        "definition": "Získávání governance tokenů za poskytování likvidity.",
+        "example": "„Governance mining na Curve mi dal 200 CRV měsíčně.“"
+    },
+    {
+        "term": "Money Market",
+        "category": "DeFi",
+        "definition": "Protokol pro půjčování/vkládání aktiv (např. Compound, Aave).",
+        "example": "„Na money marketu Euler jsem půjčil WBTC za 2% úrok.“"
+    },
+    {
+        "term": "NFT-Fi",
+        "category": "NFT",
+        "definition": "Decentralizované financování pomocí NFT (půjčky, leasing).",
+        "example": "„Na NFT-Fi platformě zastavím BAYC za 50 ETH půjčku.“"
+    },
+    {
+        "term": "Soulbound Token",
+        "category": "NFT",
+        "definition": "Nepřenositelné NFT reprezentující identitu/reputaci.",
+        "example": "„Můj Soulbound token dokládá mé DAO contributory.“"
+    },
+    {
+        "term": "Generative Art",
+        "category": "NFT",
+        "definition": "Algoritmicky generované NFT umění (např. Art Blocks).",
+        "example": "„Generative art kolekce Fidenza se prodala za 3,3M $.“"
+    },
+    {
+        "term": "Royalties",
+        "category": "NFT",
+        "definition": "Automatické procento z prodeje pro tvůrce NFT.",
+        "example": "„Za prodej mého NFT na OpenSea dostanu 5% royalties.“"
+    },
+    {
+        "term": "GM/GN",
+        "category": "Komunita",
+        "definition": "Good Morning/Good Night – pozdravy v krypto komunitě.",
+        "example": "„GM všem! Dnes je den pro nákup dipu!“"
+    },
+    {
+        "term": "Airdrop Farming",
+        "category": "Investice",
+        "definition": "Strategické získávání potenciálních airdropů.",
+        "example": "„Farmuji airdrop Starknetu přes 10 walletů.“"
+    },
+    {
+        "term": "Modular Blockchain",
+        "category": "Technologie",
+        "definition": "Blockchain specializovaný na konkrétní funkce (např. Celestia).",
+        "example": "„Modular blockchainy jsou budoucnost škálování.“"
+    },
+    {
+        "term": "Parallelized EVM",
+        "category": "Technologie",
+        "definition": "EVM zpracovávající transakce paralelně (např. Monad).",
+        "example": "„Parallelized EVM zvýší TPS na 10 000+.“"
+    },
+    {
+        "term": "Intent-Based Trading",
+        "category": "DeFi",
+        "definition": "Obchodování specifikující výsledek místo cesty (např. UniswapX).",
+        "example": "„Intent-based protokoly sníží MEV.“"
+    }
+]
