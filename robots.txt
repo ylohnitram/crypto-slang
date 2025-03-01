@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://coin-exchange.cz/public/sitemap.xml
