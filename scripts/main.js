@@ -312,3 +312,20 @@ class CryptoSlangDecoder {
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new CryptoSlangDecoder();
 });
+
+// Přidat tento kód na konec stávajícího main.js
+document.getElementById('results').addEventListener('click', function(event) {
+    // Najít nejbližší .term-card předka kliknutého elementu
+    const card = event.target.closest('.term-card');
+    if (card) {
+        // Získat slug z atributů karty nebo z jejího obsahu
+        const header = card.querySelector('.term-header');
+        if (header) {
+            const termName = header.textContent.trim().split('\n')[0].trim();
+            const termin = app.terms.find(t => t.term === termName);
+            if (termin) {
+                app.zobrazitTermin(termin);
+            }
+        }
+    }
+});
