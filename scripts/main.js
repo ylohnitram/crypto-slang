@@ -1,17 +1,26 @@
 /**
  * HLAVNÍ TŘÍDA APLIKACE
- * @class Obsluhuje veškerou funkcionalitu slovníku
+ * @class Obsluhuje funkcionalitu slovníku včetně vyhledávání, routování a zobrazování termínů
  */
 class CryptoSlangDecoder {
+    /**
+     * Inicializuje aplikaci
+     * @constructor
+     */
     constructor() {
-        this.terms = []; // Načtené termíny
-        this.currentTerm = null; // Aktuální termín
+        /** @member {Array} terms - Načtené termíny */
+        this.terms = [];
+        
+        /** @member {Object|null} currentTerm - Aktuálně zobrazený termín */
+        this.currentTerm = null;
+        
         this.init();
     }
 
     /**
-     * INICIALIZACE APLIKACE
+     * Hlavní inicializační metoda
      * @async
+     * @method
      */
     async init() {
         await this.nacistTerminy();
@@ -21,16 +30,18 @@ class CryptoSlangDecoder {
     }
 
     /**
-     * NAČTENÍ TERMÍNŮ Z JSON
+     * Načte termíny z JSON souboru
+     * @async
      * @method
+     * @throws {Error} Pokud se nepodaří načíst data
      */
     async nacistTerminy() {
         try {
             const odpoved = await fetch('data/terms.json');
             if (!odpoved.ok) throw new Error('Chyba při čtení souboru');
+            
             this.terms = await odpoved.json();
-
-            // Generování URL slugů
+            
             this.terms.forEach(termin => {
                 termin.slug = termin.term
                     .toLowerCase()
@@ -45,13 +56,13 @@ class CryptoSlangDecoder {
     }
 
     /**
-     * NASTAVENÍ VYHLEDÁVACÍHO POLÍČKA
+     * Nastaví vyhledávací funkcionalitu s debounce
      * @method
      */
     nastavitVyhledavani() {
         const vyhledavaciPole = document.getElementById('searchInput');
-
-        // Obnovení vyhledávání z URL
+        
+        // Obnovení stavu z URL
         const initialSearch = window.location.hash.match(/#search=(.+)/)?.[1];
         if (initialSearch) {
             const decodedSearch = decodeURIComponent(initialSearch);
@@ -71,7 +82,7 @@ class CryptoSlangDecoder {
     }
 
     /**
-     * FILTRACE TERMÍNŮ
+     * Filtruje termíny podle dotazu
      * @method
      * @param {string} dotaz - Hledaný výraz
      * @returns {Array} Filtrované termíny
@@ -85,7 +96,7 @@ class CryptoSlangDecoder {
     }
 
     /**
-     * NASTAVENÍ ROUTINGU
+     * Nastaví routing pro SPA navigaci
      * @method
      */
     nastavitRouting() {
@@ -95,17 +106,16 @@ class CryptoSlangDecoder {
     }
 
     /**
-     * ZPRACOVÁNÍ ROUTY
+     * Zpracuje aktuální URL hash
      * @method
      */
     zpracovatRoute() {
         const hash = window.location.hash.substring(1);
 
-        // Zpracování vyhledávání
+        // Zpracování vyhledávacího dotazu
         if (hash.startsWith('search=')) {
             const dotaz = decodeURIComponent(hash.split('=')[1]);
-            const filtrovane = this.filtrovatTerminy(dotaz);
-            this.zobrazitVysledky(filtrovane);
+            this.zobrazitVysledky(this.filtrovatTerminy(dotaz));
             document.getElementById('searchInput').value = dotaz;
             return;
         }
@@ -122,14 +132,14 @@ class CryptoSlangDecoder {
     }
 
     /**
-     * ZOBRAZENÍ DETAILU TERMÍNU
+     * Zobrazí detail termínu podle slugu
      * @method
      * @param {string} slug - Identifikátor termínu
      */
     zpracovatTerminRoute(slug) {
         const decodedSlug = decodeURIComponent(slug);
         const termin = this.terms.find(t => t.slug === decodedSlug);
-
+        
         if (termin) {
             this.currentTerm = termin;
             this.zobrazitTermin(termin);
@@ -143,7 +153,7 @@ class CryptoSlangDecoder {
     }
 
     /**
-     * ZOBRAZENÍ VŠECH TERMÍNŮ
+     * Vykreslí všechny termíny
      * @method
      */
     zobrazitVsechnyTerminy() {
@@ -155,7 +165,7 @@ class CryptoSlangDecoder {
     }
 
     /**
-     * VYGENEROVÁNÍ VÝSLEDKŮ
+     * Generuje HTML pro zobrazení výsledků
      * @method
      * @param {Array} terminy - Pole termínů k zobrazení
      */
@@ -167,7 +177,7 @@ class CryptoSlangDecoder {
     }
 
     /**
-     * VYTVOŘENÍ KARTY TERMÍNU
+     * Vytvoří HTML karty termínu
      * @method
      * @param {Object} termin - Termín k zobrazení
      * @returns {string} HTML karta
@@ -183,13 +193,13 @@ class CryptoSlangDecoder {
                     ${termin.term}
                     <span class="term-category">${termin.category}</span>
                 </div>
-                <p class="term-definition">${termin.definition.slice(0, 100)}...</p>
+                <p class="term-definition">${termin.definition.slice(0, 100).trim()}..</p>
             </div>
         `;
     }
 
     /**
-     * ZOBRAZENÍ PLNÉHO DETAILU
+     * Zobrazí detailní pohled termínu
      * @method
      * @param {Object} termin - Termín k zobrazení
      */
@@ -216,17 +226,17 @@ class CryptoSlangDecoder {
     }
 
     /**
-     * PROLINKOVÁNÍ TERMÍNŮ V TEXTU
+     * Prolinkuje termíny v textu na jejich detaily
      * @method
      * @param {string} text - Text k prolinkování
-     * @returns {string} Text s odkazy
+     * @returns {string} Prolinkovaný text
      */
     prolinkovatTerminy(text) {
         const termsPattern = this.terms
             .map(t => t.term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
             .join('|');
         const regex = new RegExp(`\\b(${termsPattern})\\b`, 'gi');
-
+        
         return text.replace(regex, (shoda) => {
             const termin = this.terms.find(t => t.term.toLowerCase() === shoda.toLowerCase());
             return termin ? `<a href="#/termin/${encodeURIComponent(termin.slug)}" class="internal-link">${shoda}</a>` : shoda;
@@ -234,27 +244,32 @@ class CryptoSlangDecoder {
     }
 
     /**
-     * AKTUALIZACE SEO
+     * Aktualizuje SEO metadata
      * @method
      * @param {Object} param0 - SEO parametry
+     * @param {string} param0.title - Titulek stránky
+     * @param {string} param0.description - Popis stránky
      */
     aktualizovatSEO({ title, description }) {
         document.title = title;
-        document.querySelector('meta[name="description"]').content = description;
+        document.querySelector('meta[name="description"]').setAttribute('content', description);
     }
 
     /**
-     * NAVIGACE NA TERMÍN
+     * Naviguje na detail termínu
      * @method
      * @param {string} slug - Identifikátor termínu
      */
     navigovatNaTermin(slug) {
-        window.history.pushState({}, '', window.location.href); // Uložení stavu
+        const currentSearch = window.location.hash.startsWith('#search=') 
+            ? window.location.hash 
+            : '';
+        window.history.pushState({ search: currentSearch }, '');
         window.location.hash = `#/termin/${slug}`;
     }
 
     /**
-     * KOPÍROVÁNÍ TERMÍNU
+     * Zkopíruje termín do schránky
      * @method
      * @param {Object} termin - Termín ke kopírování
      */
@@ -266,10 +281,10 @@ class CryptoSlangDecoder {
     }
 
     /**
-     * TOAST NOTIFIKACE
+     * Zobrazí toast notifikaci
      * @method
      * @param {string} zprava - Text zprávy
-     * @param {string} typ - Typ notifikace
+     * @param {string} typ - Typ notifikace (success/error/info)
      */
     zobrazitToast(zprava, typ) {
         const toast = document.createElement('div');
@@ -280,7 +295,7 @@ class CryptoSlangDecoder {
     }
 
     /**
-     * ZOBRAZENÍ CHYBY
+     * Zobrazí globální chybovou zprávu
      * @method
      * @param {string} zprava - Text chyby
      */
