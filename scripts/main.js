@@ -73,8 +73,8 @@ class CryptoSlangDecoder {
     filtrovatTerminy(dotaz) {
       return this.terms.filter(termin =>
         termin.term.toLowerCase().includes(dotaz) ||
-        termin.definice.toLowerCase().includes(dotaz) ||
-        termin.kategorie.toLowerCase().includes(dotaz)
+        termin.definition.toLowerCase().includes(dotaz) ||
+        termin.category.toLowerCase().includes(dotaz)
       );
     }
   
@@ -117,7 +117,7 @@ class CryptoSlangDecoder {
         this.zobrazitTermin(termin);
         this.aktualizovatSEO({
           title: `${termin.term} | CryptoSlangDecoder`,
-          description: termin.definice.slice(0, 160)
+          description: termin.definition.slice(0, 160)
         });
       } else {
         this.zobrazitVsechnyTerminy();
@@ -159,9 +159,9 @@ class CryptoSlangDecoder {
         <div class="term-card" onclick="app.navigovatNaTermin('${termin.slug}')">
           <div class="term-header">
             ${termin.term}
-            <span class="term-category">${termin.kategorie}</span>
+            <span class="term-category">${termin.category}</span>
           </div>
-          <p class="term-definition">${termin.definice.slice(0, 100)}...</p>
+          <p class="term-definition">${termin.definition.slice(0, 100)}...</p>
         </div>
       `;
     }
@@ -177,13 +177,13 @@ class CryptoSlangDecoder {
         <div class="term-card">
           <div class="term-header">
             ${termin.term}
-            <span class="term-category">${termin.kategorie}</span>
+            <span class="term-category">${termin.category}</span>
           </div>
           <div class="term-body">
-            <p class="term-definition">${this.prolinkovatTerminy(termin.definice)}</p>
-            ${termin.priklad ? `
+            <p class="term-definition">${this.prolinkovatTerminy(termin.definition)}</p>
+            ${termin.example ? `
             <div class="term-example">
-              📌 Příklad: <em>${termin.priklad}</em>
+              📌 Příklad: <em>${termin.example}</em>
             </div>` : ''}
             <button class="copy-btn" onclick="app.kopirovatTermin(${JSON.stringify(termin)})">
               📋 Kopírovat
@@ -200,7 +200,13 @@ class CryptoSlangDecoder {
      * @returns {string} Text s HTML odkazy
      */
     prolinkovatTerminy(text) {
-      return text.replace(/(DeFi|NFT|DAO|Web3)/gi, shoda => {
+      // Vytvoření regexu ze všech dostupných termínů
+      const termsPattern = this.terms
+        .map(t => t.term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+        .join('|');
+      const regex = new RegExp(`\\b(${termsPattern})\\b`, 'gi');
+      
+      return text.replace(regex, (shoda) => {
         const termin = this.terms.find(t => t.term.toLowerCase() === shoda.toLowerCase());
         return termin ? `<a href="#/termin/${termin.slug}" class="internal-link">${shoda}</a>` : shoda;
       });
@@ -232,8 +238,8 @@ class CryptoSlangDecoder {
      * @param {Object} termin - Termín ke kopírování
      */
     kopirovatTermin(termin) {
-      const text = `${termin.term} (${termin.kategorie})\n\n${termin.definice}${
-        termin.priklad ? `\n\nPříklad: ${termin.priklad}` : ''
+      const text = `${termin.term} (${termin.category})\n\n${termin.definition}${
+        termin.example ? `\n\nPříklad: ${termin.example}` : ''
       }`;
       
       navigator.clipboard.writeText(text)
