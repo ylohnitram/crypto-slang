@@ -120,14 +120,12 @@ class CryptoSlangDecoder {
             return;
         }
 
-        // Zpracování detailu termínu
+	// Zpracování detailu termínu
         const [route, slug] = hash.split('/');
-        switch (route) {
-            case 'term':  // Změněno z 'termin' na 'term'
-                this.zpracovatTerminRoute(slug);
-                break;
-            default:
-                this.zobrazitVsechnyTerminy();
+        if (route === 'term' || route === 'termin') {
+            this.zpracovatTerminRoute(slug);
+        } else {
+            this.zobrazitVsechnyTerminy();
         }
     }
 
