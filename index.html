@@ -1,19 +1,71 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="cs" itemscope itemtype="http://schema.org/WebSite">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Největší slovník krypto termínů s podrobnými vysvětleními a příklady. Vše o HODL, DeFi, NFT, DAO a dalších krypto pojmech.">
+    <meta name="keywords" content="krypto slovník, vysvětlení krypto termínů, co je HODL, DeFi návod, NFT význam">
+    <meta property="og:title" content="Crypto Slang Decoder | Kompletní krypto slovník">
+    <meta property="og:description" content="Pochopte kryptoměny skrz klíčové termíny. Aktualizováno 2025 s nejnovějšími trendy (RWA, zkEVM, AI oracles).">
+    <meta property="og:image" content="https://coin-exchange.cz/images/og-image.jpg">
+    <meta property="og:url" content="https://coin-exchange.cz">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://coin-exchange.cz">
     <link rel="stylesheet" href="styles.css">
-    <title>Crypto Slang Decoder</title>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Crypto Slang Decoder",
+        "url": "https://coin-exchange.cz",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://coin-exchange.cz?q={search_term}",
+            "query-input": "required name=search_term"
+        }
+    }
+    </script>
+    <title>Crypto Slang Decoder - Vysvětlení krypto pojmů</title>
 </head>
 <body>
-    <div class="container">
-        <h1>📖 Crypto Slang Decoder</h1>
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Hledat termín...">
+    <nav aria-label="Hlavní navigace" class="main-nav">
+        <div class="nav-content">
+            <a href="/" class="logo">🪙 CSD</a>
+            <div class="nav-links">
+                <a href="#vsechny-termyny" class="nav-link">Všechny termíny</a>
+                <a href="#o-projektu" class="nav-link">O projektu</a>
+            </div>
         </div>
-        <div id="results"></div>
+    </nav>
+
+    <div class="container">
+        <div class="breadcrumbs" id="breadcrumbs"></div>
+        
+        <h1 class="main-heading">📖 Crypto Slang Decoder</h1>
+        
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Zadejte krypto termín..." 
+                   aria-label="Vyhledávání v krypto slovníku">
+        </div>
+
+        <div id="results" class="results-grid"></div>
+
+        <section class="info-section">
+            <h2>❓ Proč náš slovník?</h2>
+            <div class="info-cards">
+                <div class="info-card">
+                    <h3>Vždy aktuální</h3>
+                    <p>Průběžně aktualizujeme o nové termíny z DeFi, NFT a web3</p>
+                </div>
+                <div class="info-card">
+                    <h3>Srozumitelné vysvětlení</h3>
+                    <p>Žádný zbytečný žargon. Vše vysvětleno jednoduše</p>
+                </div>
+            </div>
+        </section>
     </div>
+
     <script src="scripts/main.js"></script>
 </body>
 </html>

@@ -1,39 +1,85 @@
-/* === Základní nastavení === */
-* {
+/* === Reset === */
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* === Základní styly === */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
-    color: #fff;
+    color: #e0e0e0;
+    line-height: 1.6;
     min-height: 100vh;
-    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
+    padding: 20px;
+    flex-grow: 1;
 }
 
-/* === Vyhledávací pole === */
+/* === Navigace === */
+.main-nav {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.logo {
+    font-size: 1.5rem;
+    color: #00ff88;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-link {
+    color: #fff;
+    text-decoration: none;
+    transition: opacity 0.3s;
+}
+
+.nav-link:hover {
+    opacity: 0.8;
+}
+
+/* === Vyhledávání === */
 .search-box {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 30px;
-    border-radius: 15px;
-    margin-bottom: 40px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 #searchInput {
     width: 100%;
-    padding: 18px;
-    font-size: 18px;
+    padding: 1rem;
+    font-size: 1.1rem;
     border: 2px solid #00ff88;
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.3);
     color: #fff;
     transition: all 0.3s;
 }
@@ -43,14 +89,20 @@ body {
     box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
 }
 
-/* === Seznam termínů === */
+/* === Výsledky === */
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
 .term-card {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
-    padding: 25px;
-    margin-bottom: 20px;
-    transition: transform 0.3s;
+    padding: 1.5rem;
+    transition: transform 0.3s, background 0.3s;
 }
 
 .term-card:hover {
@@ -60,64 +112,85 @@ body {
 
 .term-header {
     color: #00ff88;
-    font-size: 24px;
-    margin-bottom: 15px;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.5rem;
 }
 
-.term-header span {
+.term-category {
     background: rgba(0, 255, 136, 0.1);
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 14px;
+    color: #00ff88;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.term-definition {
+    margin: 1rem 0;
+    color: #ccc;
+}
+
+.term-example {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    font-style: italic;
+    color: #888;
 }
 
 .copy-btn {
-    background: rgba(0, 255, 136, 0.2);
+    background: rgba(0, 255, 136, 0.1);
     color: #00ff88;
     border: 1px solid #00ff88;
-    padding: 8px 20px;
-    border-radius: 7px;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
     cursor: pointer;
-    margin-top: 15px;
+    width: 100%;
     transition: all 0.3s;
 }
 
 .copy-btn:hover {
-    background: rgba(0, 255, 136, 0.3);
+    background: rgba(0, 255, 136, 0.2);
 }
 
-/* Toast notifikace */
-.toast {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 15px 25px;
-    border-radius: 8px;
-    color: white;
-    font-weight: bold;
-    animation: slideIn 0.3s ease-out;
+/* === Informační sekce === */
+.info-section {
+    margin: 4rem 0;
 }
 
-@keyframes slideIn {
-    from { bottom: -50px; }
-    to { bottom: 20px; }
+.info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
 }
 
-/* Styl pro "žádné výsledky" */
-.no-results {
+.info-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    border-radius: 12px;
     text-align: center;
-    padding: 40px;
-    color: #888;
-    font-size: 1.2em;
 }
 
-/* === Responsivní design === */
+.info-card h3 {
+    color: #00ff88;
+    margin-bottom: 1rem;
+}
+
+/* === Responzivita === */
 @media (max-width: 768px) {
-    .term-header {
-        font-size: 20px;
+    .nav-links {
+        display: none;
+    }
+
+    .search-box {
+        padding: 1rem;
+    }
+
+    #searchInput {
+        font-size: 1rem;
     }
 }
