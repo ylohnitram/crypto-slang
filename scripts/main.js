@@ -123,7 +123,7 @@ class CryptoSlangDecoder {
         // Zpracování detailu termínu
         const [route, slug] = hash.split('/');
         switch (route) {
-            case 'termin':
+            case 'term':  // Změněno z 'termin' na 'term'
                 this.zpracovatTerminRoute(slug);
                 break;
             default:
@@ -239,7 +239,7 @@ class CryptoSlangDecoder {
         
         return text.replace(regex, (shoda) => {
             const termin = this.terms.find(t => t.term.toLowerCase() === shoda.toLowerCase());
-            return termin ? `<a href="#/termin/${encodeURIComponent(termin.slug)}" class="internal-link">${shoda}</a>` : shoda;
+            return termin ? `<a href="#/term/${encodeURIComponent(termin.slug)}" class="internal-link">${shoda}</a>` : shoda;  // Změněno z '#/termin/' na '#/term/'
         });
     }
 
@@ -265,7 +265,7 @@ class CryptoSlangDecoder {
             ? window.location.hash 
             : '';
         window.history.pushState({ search: currentSearch }, '');
-        window.location.hash = `#/termin/${slug}`;
+        window.location.hash = `#/term/${slug}`;  // Změněno z '#/termin/' na '#/term/'
     }
 
     /**
