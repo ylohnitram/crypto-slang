@@ -52,6 +52,23 @@
                 from { opacity: 0; transform: translateY(10px); }
                 to { opacity: 1; transform: translateY(0); }
             }
+            .back-link {
+                margin-top: 15px;
+                text-align: center;
+            }
+            .back-to-list {
+                display: inline-block;
+                color: #00ff88;
+                text-decoration: none;
+                padding: 8px 16px;
+                border-radius: 6px;
+                background: rgba(0, 255, 136, 0.1);
+                border: 1px solid rgba(0, 255, 136, 0.2);
+                transition: all 0.2s ease;
+            }
+            .back-to-list:hover {
+                background: rgba(0, 255, 136, 0.2);
+            }
         `;
         document.head.appendChild(style);
         
@@ -83,9 +100,11 @@
                                 <button class="copy-btn" onclick="copyTermToClipboard('${term.term}')">
                                     📋 Kopírovat
                                 </button>
-                                <button class="back-btn" onclick="showAllTerms()">
+                            </div>
+                            <div class="back-link">
+                                <a href="#" onclick="showAllTerms(); return false;" class="back-to-list">
                                     ⬅️ Zpět na přehled
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -147,9 +166,43 @@
         
         // Funkce pro návrat na přehled všech termínů
         window.showAllTerms = function() {
-            if (window.app && window.app.zobrazitVsechnyTerminy) {
-                window.app.zobrazitVsechnyTerminy();
-                window.history.pushState({}, '', '#');
+            if (window.app) {
+                if (window.app.zobrazitVsechnyTerminy) {
+                    try {
+                        // Zkusíme použít původní metodu
+                        window.app.zobrazitVsechnyTerminy();
+                    } catch (e) {
+                        console.error('Chyba při použití původní metody, používám vlastní implementaci:', e);
+                        
+                        // Vlastní implementace zobrazení všech termínů
+                        const resultsContainer = document.getElementById('results');
+                        if (resultsContainer && window.app.terms) {
+                            resultsContainer.className = 'results-grid';
+                            resultsContainer.innerHTML = window.app.terms.map(term => `
+                                <div class="term-card">
+                                    <div class="term-header">
+                                        ${term.term}
+                                        <span class="term-category">${term.category}</span>
+                                    </div>
+                                    <p class="term-definition">${term.definition.slice(0, 100).trim()}..</p>
+                                </div>
+                            `).join('');
+                        }
+                    }
+                    
+                    // Aktualizace URL a dalších stavových informací
+                    window.history.pushState({}, '', '#');
+                    document.title = 'Crypto Slang Decoder - Vysvětlení krypto pojmů';
+                    const metaDesc = document.querySelector('meta[name="description"]');
+                    if (metaDesc) {
+                        metaDesc.setAttribute('content', 'Největší slovník krypto termínů s podrobnými vysvětleními a příklady.');
+                    }
+                    
+                    // Reset aktuálního termínu
+                    if (window.app) {
+                        window.app.currentTerm = null;
+                    }
+                }
             }
         };
         
@@ -181,7 +234,7 @@
             // Kontrola, zda je kliknuto na kartu nebo její potomky
             const termCard = event.target.closest('.term-card');
             
-            if (termCard && !event.target.closest('.term-actions')) {
+            if (termCard && !event.target.closest('.term-actions') && !event.target.closest('.back-link')) {
                 // Zastavení výchozího chování
                 event.preventDefault();
                 event.stopPropagation();
