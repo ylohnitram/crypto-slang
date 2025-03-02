@@ -102,7 +102,7 @@
                                 </button>
                             </div>
                             <div class="back-link">
-                                <a href="#" onclick="showAllTerms(); return false;" class="back-to-list">
+                                <a href="https://coin-exchange.cz" class="back-to-list">
                                     ⬅️ Zpět na přehled
                                 </a>
                             </div>
@@ -163,44 +163,6 @@
                 metaDesc.setAttribute('content', term.definition.slice(0, 160));
             }
         }
-        
-        // Funkce pro návrat na přehled všech termínů
-        window.showAllTerms = function() {
-            console.log('Pokus o návrat na seznam všech termínů');
-            
-            // Vždy používáme přímé zobrazení všech termínů pomocí vlastní implementace
-            const resultsContainer = document.getElementById('results');
-            if (resultsContainer && window.app && window.app.terms) {
-                // Nastavení správné třídy kontejneru a vygenerování HTML pro karty
-                resultsContainer.className = 'results-grid';
-                resultsContainer.innerHTML = window.app.terms.map(term => `
-                    <div class="term-card">
-                        <div class="term-header">
-                            ${term.term}
-                            <span class="term-category">${term.category}</span>
-                        </div>
-                        <p class="term-definition">${term.definition.slice(0, 100).trim()}..</p>
-                    </div>
-                `).join('');
-                
-                // Aktualizace URL a dalších stavových informací
-                window.history.pushState({}, '', '#');
-                document.title = 'Crypto Slang Decoder - Vysvětlení krypto pojmů';
-                const metaDesc = document.querySelector('meta[name="description"]');
-                if (metaDesc) {
-                    metaDesc.setAttribute('content', 'Největší slovník krypto termínů s podrobnými vysvětleními a příklady.');
-                }
-                
-                // Reset aktuálního termínu
-                if (window.app) {
-                    window.app.currentTerm = null;
-                }
-                
-                console.log('Seznam všech termínů zobrazen');
-            } else {
-                console.error('Nelze zobrazit seznam termínů - chybí data nebo kontejner');
-            }
-        };
         
         // Funkce pro kopírování termínu do schránky
         window.copyTermToClipboard = function(termName) {
