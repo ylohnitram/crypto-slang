@@ -166,43 +166,39 @@
         
         // Funkce pro návrat na přehled všech termínů
         window.showAllTerms = function() {
-            if (window.app) {
-                if (window.app.zobrazitVsechnyTerminy) {
-                    try {
-                        // Zkusíme použít původní metodu
-                        window.app.zobrazitVsechnyTerminy();
-                    } catch (e) {
-                        console.error('Chyba při použití původní metody, používám vlastní implementaci:', e);
-                        
-                        // Vlastní implementace zobrazení všech termínů
-                        const resultsContainer = document.getElementById('results');
-                        if (resultsContainer && window.app.terms) {
-                            resultsContainer.className = 'results-grid';
-                            resultsContainer.innerHTML = window.app.terms.map(term => `
-                                <div class="term-card">
-                                    <div class="term-header">
-                                        ${term.term}
-                                        <span class="term-category">${term.category}</span>
-                                    </div>
-                                    <p class="term-definition">${term.definition.slice(0, 100).trim()}..</p>
-                                </div>
-                            `).join('');
-                        }
-                    }
-                    
-                    // Aktualizace URL a dalších stavových informací
-                    window.history.pushState({}, '', '#');
-                    document.title = 'Crypto Slang Decoder - Vysvětlení krypto pojmů';
-                    const metaDesc = document.querySelector('meta[name="description"]');
-                    if (metaDesc) {
-                        metaDesc.setAttribute('content', 'Největší slovník krypto termínů s podrobnými vysvětleními a příklady.');
-                    }
-                    
-                    // Reset aktuálního termínu
-                    if (window.app) {
-                        window.app.currentTerm = null;
-                    }
+            console.log('Pokus o návrat na seznam všech termínů');
+            
+            // Vždy používáme přímé zobrazení všech termínů pomocí vlastní implementace
+            const resultsContainer = document.getElementById('results');
+            if (resultsContainer && window.app && window.app.terms) {
+                // Nastavení správné třídy kontejneru a vygenerování HTML pro karty
+                resultsContainer.className = 'results-grid';
+                resultsContainer.innerHTML = window.app.terms.map(term => `
+                    <div class="term-card">
+                        <div class="term-header">
+                            ${term.term}
+                            <span class="term-category">${term.category}</span>
+                        </div>
+                        <p class="term-definition">${term.definition.slice(0, 100).trim()}..</p>
+                    </div>
+                `).join('');
+                
+                // Aktualizace URL a dalších stavových informací
+                window.history.pushState({}, '', '#');
+                document.title = 'Crypto Slang Decoder - Vysvětlení krypto pojmů';
+                const metaDesc = document.querySelector('meta[name="description"]');
+                if (metaDesc) {
+                    metaDesc.setAttribute('content', 'Největší slovník krypto termínů s podrobnými vysvětleními a příklady.');
                 }
+                
+                // Reset aktuálního termínu
+                if (window.app) {
+                    window.app.currentTerm = null;
+                }
+                
+                console.log('Seznam všech termínů zobrazen');
+            } else {
+                console.error('Nelze zobrazit seznam termínů - chybí data nebo kontejner');
             }
         };
         
@@ -243,12 +239,29 @@
                 const termHeader = termCard.querySelector('.term-header');
                 if (!termHeader) return;
                 
-                const termName = termHeader.childNodes[0].textContent.trim();
+                // Extrahujeme text prvního uzlu (přeskočíme případné další elementy)
+                let termName = '';
+                for (let i = 0; i < termHeader.childNodes.length; i++) {
+                    const node = termHeader.childNodes[i];
+                    if (node.nodeType === Node.TEXT_NODE) {
+                        termName = node.textContent.trim();
+                        break;
+                    }
+                }
+                
+                // Pokud jsme nenašli textový uzel, zkusíme brát celý obsah
+                if (!termName) {
+                    termName = termHeader.textContent.split('\n')[0].trim();
+                }
+                
                 console.log('Kliknuto na termín:', termName);
                 
                 // Nalezení termínu v datech
                 const term = window.app.terms.find(t => t.term === termName);
-                if (!term) return;
+                if (!term) {
+                    console.error('Termín nenalezen v datech:', termName);
+                    return;
+                }
                 
                 // Zobrazení detailu
                 displayTermDetail(term);
