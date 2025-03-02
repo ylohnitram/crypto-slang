@@ -1,100 +1,249 @@
 /**
- * OPRAVNÝ SKRIPT PRO KLIKATELNÉ KARTY
+ * OPRAVNÝ SKRIPT PRO KLIKATELNÉ KARTY A ZOBRAZENÍ DETAILU
  * Řeší problém s nefungujícím přechodem na detail termínů
  * Umístění: scripts/term-detail-fix.js
  */
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Počkáme na inicializaci aplikace
-    setTimeout(function() {
-        // Získáme kontejner s výsledky
+(function() {
+    // Funkce pro kontrolu, zda je aplikace načtena
+    function isAppReady() {
+        return window.app && window.app.terms && window.app.terms.length > 0;
+    }
+    
+    // Funkce pro čekání na aplikaci
+    function waitForApp(callback, maxAttempts = 20) {
+        let attempts = 0;
+        
+        function checkApp() {
+            if (isAppReady()) {
+                callback();
+                return;
+            }
+            
+            attempts++;
+            if (attempts < maxAttempts) {
+                setTimeout(checkApp, 200);
+            } else {
+                console.error('Aplikace se nenačetla v očekávaném čase');
+            }
+        }
+        
+        checkApp();
+    }
+    
+    // Kompletní přepsání navigace a zobrazení detailu
+    function setupDetailNavigation() {
+        console.log('Instaluji nový navigační systém');
+        
+        // Příprava CSS pro animaci přechodu
+        const style = document.createElement('style');
+        style.textContent = `
+            .term-card {
+                transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+            }
+            .term-card:hover {
+                cursor: pointer;
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            }
+            .term-detail-view {
+                animation: fadeIn 0.3s ease-out;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Získání reference na kontejner výsledků
         const resultsContainer = document.getElementById('results');
         
-        if (resultsContainer) {
-            // Přidáme event listener na kontejner, který bude delegovat události na karty
-            resultsContainer.addEventListener('click', function(event) {
-                // Zastavíme výchozí chování a propagaci události, aby nedošlo k duplicitnímu zpracování
+        if (!resultsContainer) {
+            console.error('Kontejner výsledků nenalezen');
+            return;
+        }
+        
+        // Funkce pro zobrazení detailu termínu
+        function displayTermDetail(term) {
+            // Příprava HTML pro detail
+            const detailHTML = `
+                <div class="term-detail-view">
+                    <div class="term-card">
+                        <div class="term-header">
+                            ${term.term}
+                            <span class="term-category">${term.category}</span>
+                        </div>
+                        <div class="term-body">
+                            <p class="term-definition">${linkifyTerms(term.definition)}</p>
+                            ${term.example ? `
+                            <div class="term-example">
+                                📌 Příklad: <em>${term.example}</em>
+                            </div>` : ''}
+                            <div class="term-actions">
+                                <button class="copy-btn" onclick="copyTermToClipboard('${term.term}')">
+                                    📋 Kopírovat
+                                </button>
+                                <button class="back-btn" onclick="showAllTerms()">
+                                    ⬅️ Zpět na přehled
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Aktualizace obsahu
+            resultsContainer.innerHTML = detailHTML;
+            
+            // Aktualizace URL a metadat
+            updateUrlAndMetadata(term);
+            
+            // Uložení aktuálního termínu do app
+            if (window.app) {
+                window.app.currentTerm = term;
+            }
+        }
+        
+        // Funkce pro prolinkování termínů v textu
+        function linkifyTerms(text) {
+            if (!window.app || !window.app.terms) return text;
+            
+            const terms = window.app.terms;
+            
+            terms.forEach(term => {
+                const regex = new RegExp(`\\b${escapeRegExp(term.term)}\\b`, 'gi');
+                text = text.replace(regex, `<a href="#/term/${term.slug}" class="term-link">${term.term}</a>`);
+            });
+            
+            return text;
+        }
+        
+        // Pomocná funkce pro escape regulérních výrazů
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+        
+        // Funkce pro aktualizaci URL a metadat
+        function updateUrlAndMetadata(term) {
+            const slug = term.slug || term.term.toLowerCase()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                .replace(/ /g, '-')
+                .replace(/[^\w-]+/g, '');
+            
+            // Aktualizace URL
+            window.history.pushState(
+                { term: term.term }, 
+                '', 
+                `#/term/${encodeURIComponent(slug)}`
+            );
+            
+            // Aktualizace titulku a meta dat
+            document.title = `${term.term} | CryptoSlangDecoder`;
+            const metaDesc = document.querySelector('meta[name="description"]');
+            if (metaDesc) {
+                metaDesc.setAttribute('content', term.definition.slice(0, 160));
+            }
+        }
+        
+        // Funkce pro návrat na přehled všech termínů
+        window.showAllTerms = function() {
+            if (window.app && window.app.zobrazitVsechnyTerminy) {
+                window.app.zobrazitVsechnyTerminy();
+                window.history.pushState({}, '', '#');
+            }
+        };
+        
+        // Funkce pro kopírování termínu do schránky
+        window.copyTermToClipboard = function(termName) {
+            if (!window.app || !window.app.terms) return;
+            
+            const term = window.app.terms.find(t => t.term === termName);
+            if (!term) return;
+            
+            const text = `${term.term} (${term.category})\n\n${term.definition}${term.example ? `\n\nPříklad: ${term.example}` : ''}`;
+            
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    // Zobrazení notifikace
+                    const toast = document.createElement('div');
+                    toast.className = 'toast toast-success';
+                    toast.textContent = 'Zkopírováno!';
+                    document.body.appendChild(toast);
+                    setTimeout(() => toast.remove(), 3000);
+                })
+                .catch(err => {
+                    console.error('Chyba při kopírování:', err);
+                });
+        };
+        
+        // Nastavení event listeneru pro delegaci kliknutí
+        resultsContainer.addEventListener('click', function(event) {
+            // Kontrola, zda je kliknuto na kartu nebo její potomky
+            const termCard = event.target.closest('.term-card');
+            
+            if (termCard && !event.target.closest('.term-actions')) {
+                // Zastavení výchozího chování
                 event.preventDefault();
                 event.stopPropagation();
                 
-                // Najdeme nejbližší předek kliknutého elementu, který má třídu 'term-card'
-                const termCard = event.target.closest('.term-card');
+                // Získání názvu termínu
+                const termHeader = termCard.querySelector('.term-header');
+                if (!termHeader) return;
                 
-                if (termCard) {
-                    // Extrahujeme term název a kategorii
-                    const termHeader = termCard.querySelector('.term-header');
-                    if (termHeader) {
-                        // Získáme název termínu z prvního textového uzlu hlavičky
-                        const termName = termHeader.childNodes[0].textContent.trim();
-                        console.log('Kliknuto na termín:', termName);
-                        
-                        // Najdeme odpovídající termín v datech aplikace
-                        if (window.app && window.app.terms) {
-                            const term = window.app.terms.find(t => t.term === termName);
-                            
-                            if (term) {
-                                // Použijeme existující metodu pro zobrazení detailu
-                                window.app.currentTerm = term;
-                                window.app.zobrazitTermin(term);
-                                
-                                // Aktualizujeme URL pro účely historie
-                                const slug = term.slug || term.term.toLowerCase()
-                                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                                    .replace(/ /g, '-')
-                                    .replace(/[^\w-]+/g, '');
-                                
-                                // Aktualizujeme URL bez vyvolání další navigace
-                                window.history.pushState(
-                                    { term: term.term }, 
-                                    '', 
-                                    `#/term/${encodeURIComponent(slug)}`
-                                );
-                                
-                                // Aktualizujeme SEO metadata
-                                window.app.aktualizovatSEO({
-                                    title: `${term.term} | CryptoSlangDecoder`,
-                                    description: term.definition.slice(0, 160)
-                                });
-                                
-                                console.log('URL aktualizováno na:', window.location.hash);
-                                
-                                // Zabráníme další propagaci a výchozímu chování
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }, true); // Přidáváme true pro fázi zachycení události (capture phase)
-            
-            // Deaktivujeme původní onclick handler na kartách
-            function deactivateOriginalClickHandlers() {
-                const cards = document.querySelectorAll('.term-card');
-                cards.forEach(card => {
-                    // Odstraníme inline onclick atribut
-                    card.removeAttribute('onclick');
-                    
-                    // Přidáme vlastní atribut, který můžeme kontrolovat, aby nedošlo k opětovnému přidání
-                    card.setAttribute('data-click-handled', 'true');
-                });
+                const termName = termHeader.childNodes[0].textContent.trim();
+                console.log('Kliknuto na termín:', termName);
+                
+                // Nalezení termínu v datech
+                const term = window.app.terms.find(t => t.term === termName);
+                if (!term) return;
+                
+                // Zobrazení detailu
+                displayTermDetail(term);
             }
             
-            // Spustíme deaktivaci původních handlerů ihned
-            deactivateOriginalClickHandlers();
+            // Kontrola kliknutí na odkaz v textu definice
+            if (event.target.classList.contains('term-link')) {
+                event.preventDefault();
+                
+                const href = event.target.getAttribute('href');
+                const slug = href.split('/').pop();
+                
+                const term = window.app.terms.find(t => t.slug === decodeURIComponent(slug));
+                if (term) {
+                    displayTermDetail(term);
+                }
+            }
+        }, true);
+        
+        // Kontrola, zda je v URL fragment pro detail
+        function checkUrlForDetail() {
+            const hash = window.location.hash;
             
-            // A také po každé aktualizaci seznamu karet (např. po vyhledávání)
-            const observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    if (mutation.type === 'childList') {
-                        deactivateOriginalClickHandlers();
+            if (hash && hash.includes('/term/')) {
+                const slug = decodeURIComponent(hash.split('/').pop());
+                
+                if (slug && window.app && window.app.terms) {
+                    const term = window.app.terms.find(t => t.slug === slug);
+                    
+                    if (term) {
+                        console.log('Načítám detail z URL:', term.term);
+                        displayTermDetail(term);
                     }
-                });
-            });
-            
-            observer.observe(resultsContainer, { childList: true, subtree: true });
-            
-            console.log('Event delegace nainstalována na kontejner výsledků');
-        } else {
-            console.error('Kontejner výsledků nebyl nalezen');
+                }
+            }
         }
-    }, 500); // Snížili jsme čekání na 500ms
-});
+        
+        // Při změně URL kontrolujeme, zda nemáme zobrazit detail
+        window.addEventListener('hashchange', checkUrlForDetail);
+        
+        // Zkontrolujeme URL i při inicializaci
+        checkUrlForDetail();
+        
+        console.log('Nový navigační systém je připraven');
+    }
+    
+    // Po načtení stránky spustíme naši funkci
+    document.addEventListener('DOMContentLoaded', function() {
+        waitForApp(setupDetailNavigation);
+    });
+})();
